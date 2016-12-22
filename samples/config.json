@@ -26,6 +26,10 @@
 			"sources": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.26/libpng-1.6.26.tar.xz/download"
 		},
 		{
+			"name": "gettext",
+			"sources": "http://ftp.gnu.org/pub/gnu/gettext/gettext-0.19.tar.gz"
+		},
+		{
 			"name": "glib",
 			"sources": "http://ftp.gnome.org/pub/gnome/sources/glib/2.51/glib-2.51.0.tar.xz",
 			"configure": [
