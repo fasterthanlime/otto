@@ -276,9 +276,13 @@ func tarFlagsForFormat(format string) (string, error) {
 	}
 }
 
-func command(exe string, env []string, args ...string) error {
+func command(exe string, envIn []string, args ...string) error {
 	log.Printf("> %s %s", exe, strings.Join(args, " "))
-	log.Printf("> env: %s", strings.Join(env, " "))
+	log.Printf("> env: %s", strings.Join(envIn, " "))
+	env := os.Environ()
+	for _, v := range envIn {
+		env = append(env, v)
+	}
 
 	cmd := exec.Command(exe, args...)
 	cmd.Stdout = os.Stdout
