@@ -43,6 +43,8 @@ var (
 	app        = kingpin.New("otto", "An autotools hater")
 	configPath = app.Arg("config", "Path to JSON config file").Required().String()
 	outDirArg  = app.Arg("outdir", "Output dir").Required().String()
+	profileArg = app.Flag("profile", "Profile to build").String()
+	resumeArg  = app.Flag("resume", "Which package to resume the build at").String()
 )
 
 func main() {
@@ -70,6 +72,10 @@ func main() {
 
 	log.Printf("Config: %#v", config)
 	for _, profile := range config.Profiles {
+		if profileArg != nil && *profileArg != profile.Name {
+			continue
+		}
+
 		log.Println("Dealing with profile", profile.Name)
 
 		src := filepath.Join(outDir, "src", profile.Name)
@@ -85,7 +91,20 @@ func main() {
 			log.Fatal("While creating prefix directory", err)
 		}
 
+		skipping := false
+		if resumeArg != nil {
+			skipping = true
+		}
+
 		for _, pkg := range config.Packages {
+			if pkg.Name == *resumeArg {
+				skipping = false
+			}
+
+			if skipping {
+				continue
+			}
+
 			log.Println("Preparing", pkg.Name)
 			pkgSrc := filepath.Join(src, pkg.Name)
 			err = os.MkdirAll(pkgSrc, 0755)
@@ -211,6 +230,8 @@ func main() {
 			}()
 		}
 	}
+
+	log.Println("All done!")
 }
 
 func tarFlagsForFormat(format string) (string, error) {
