@@ -3,16 +3,21 @@
 		{
 			"name": "itchsetup32",
 			"env": {
-				"CFLAGS": "-m32",
-				"CXXFLAGS": "-m32",
-				"LDFLAGS": "-m32"
+				"CFLAGS": "-m32 -I $PREFIX/include",
+				"CXXFLAGS": "-m32 -I $PREFIX/include",
+				"LDFLAGS": "-m32 -L $PREFIX/lib"
 			},
 			"configure": [
 				"--build=i686-pc-linux-gnu"
 			]
 		},
 		{
-			"name": "itchsetup64"
+			"name": "itchsetup64",
+			"env": {
+				"CFLAGS": "-I $PREFIX/include",
+				"CXXFLAGS": "-I $PREFIX/include",
+				"LDFLAGS": "-L $PREFIX/lib"
+			},
 		}
 	],
 	"packages": [
@@ -27,7 +32,8 @@
 			"name": "libpng",
 			"sources": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.26/libpng-1.6.26.tar.xz/download",
 			"configure": [
-				"--with-zlib-prefix=$PREFIX"
+				"--libdir=$PREFIX/lib"
+				"--libdir=$PREFIX/lib"
 			]
 		},
 		{

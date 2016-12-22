@@ -34,6 +34,7 @@ type Profile struct {
 
 type Package struct {
 	Name               string
+	Env                map[string]string
 	Sources            string
 	Format             string
 	Configure          []string
@@ -132,7 +133,10 @@ func main() {
 			log.Println("Preparing", pkg.Name)
 			env := []string{}
 			for k, v := range profile.Env {
-				env = append(env, fmt.Sprintf("%s=%s", k, v))
+				env = append(env, fmt.Sprintf("%s=%s", k, expand(v)))
+			}
+			for k, v := range pkg.Env {
+				env = append(env, fmt.Sprintf("%s=%s", k, expand(v)))
 			}
 			env = append(env, fmt.Sprintf("PREFIX=%s", prefix))
 			env = append(env, fmt.Sprintf("PKG_CONFIG_PATH=%s/lib/pkgconfig", prefix))
