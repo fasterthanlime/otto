@@ -109,6 +109,11 @@ func main() {
 			log.Fatal("While creating prefix directory", err)
 		}
 
+		expand := func(s string) string {
+			res := strings.Replace(s, "$PREFIX", prefix, 0)
+			return res
+		}
+
 		skipping := false
 		if *resumeArg != "" {
 			skipping = true
@@ -237,6 +242,11 @@ func main() {
 					if !configureBlacklist.Has(arg) {
 						configureArgs = append(configureArgs, arg)
 					}
+				}
+
+				// replace usage of $PREFIX, etc
+				for i := range configureArgs {
+					configureArgs[i] = expand(configureArgs[i])
 				}
 
 				log.Println("Configuring...")
