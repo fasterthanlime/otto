@@ -129,6 +129,7 @@ func main() {
 			for k, v := range profile.Env {
 				env = append(env, fmt.Sprintf("%s=%s", k, v))
 			}
+			env = append(env, fmt.Sprintf("PREFIX=%s", prefix))
 
 			pkgSrc := filepath.Join(src, pkg.Name)
 			err = os.MkdirAll(pkgSrc, 0755)
@@ -277,7 +278,7 @@ func tarFlagsForFormat(format string) (string, error) {
 
 func command(exe string, env []string, args ...string) error {
 	log.Printf("> %s %s", exe, strings.Join(args, " "))
-	log.Printf("> env:\n%s", strings.Join(env, "\n"))
+	log.Printf("> env: %s", strings.Join(env, " "))
 
 	cmd := exec.Command(exe, args...)
 	cmd.Stdout = os.Stdout
