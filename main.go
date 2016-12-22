@@ -125,6 +125,11 @@ func main() {
 			}
 
 			log.Println("Preparing", pkg.Name)
+			env := []string{}
+			for k, v := range profile.Env {
+				env = append(env, fmt.Sprintf("%s=%s", k, v))
+			}
+
 			pkgSrc := filepath.Join(src, pkg.Name)
 			err = os.MkdirAll(pkgSrc, 0755)
 			if err != nil {
@@ -182,7 +187,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			err = command("tar", tarFlags, pkgArchive, "-C", pkgSrc)
+			err = command("tar", env, tarFlags, pkgArchive, "-C", pkgSrc)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -234,21 +239,21 @@ func main() {
 
 				log.Println("Configuring...")
 
-				err = command("./configure", configureArgs...)
+				err = command("./configure", env, configureArgs...)
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				log.Println("Building...")
 
-				err = command("make", makeConcurrencyFlag)
+				err = command("make", env, makeConcurrencyFlag)
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				log.Println("Installing...")
 
-				err = command("make", "install")
+				err = command("make", env, "install")
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -270,11 +275,12 @@ func tarFlagsForFormat(format string) (string, error) {
 	}
 }
 
-func command(exe string, args ...string) error {
+func command(exe string, env []string, args ...string) error {
 	log.Printf("> %s %s", exe, strings.Join(args, " "))
 
 	cmd := exec.Command(exe, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	cmd.Env = env
 	return cmd.Run()
 }
