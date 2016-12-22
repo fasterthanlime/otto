@@ -10,7 +10,11 @@
 			},
 			"configure": [
 				"--build=i686-pc-linux-gnu"
-			]
+			],
+			"pkgconfig": [
+				"/usr/lib/i386-linux-gnu/pkgconfig"
+			],
+			"notes": "You might need these: zlib1g-dev:i386 libffi-dev:i386"
 		},
 		{
 			"name": "itchsetup64"

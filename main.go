@@ -30,6 +30,7 @@ type Profile struct {
 	Name      string
 	Env       map[string]string
 	Configure []string
+	Pkgconfig []string
 }
 
 type Package struct {
@@ -139,7 +140,12 @@ func main() {
 				env = append(env, fmt.Sprintf("%s=%s", k, expand(v)))
 			}
 			env = append(env, fmt.Sprintf("PREFIX=%s", prefix))
-			env = append(env, fmt.Sprintf("PKG_CONFIG_PATH=%s/lib/pkgconfig", prefix))
+
+			pkgConfig := fmt.Sprintf("%s/lib/pkgconfig", prefix)
+			for _, v := range profile.Pkgconfig {
+				pkgConfig = fmt.Sprintf("%s:%s", pkgConfig, v)
+			}
+			env = append(env, fmt.Sprintf("PKG_CONFIG_PATH=%s", pkgConfig))
 
 			pkgSrc := filepath.Join(src, pkg.Name)
 			err = os.MkdirAll(pkgSrc, 0755)
