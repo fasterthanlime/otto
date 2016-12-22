@@ -40,14 +40,17 @@ type Package struct {
 }
 
 var (
-	app        = kingpin.New("otto", "An autotools hater")
-	configPath = app.Arg("config", "Path to JSON config file").Required().String()
-	outDirArg  = app.Arg("outdir", "Output dir").Required().String()
-	profileArg = app.Flag("profile", "Profile to build").String()
-	resumeArg  = app.Flag("resume", "Which package to resume the build at").String()
+	app                 = kingpin.New("otto", "An autotools hater")
+	configPath          = app.Arg("config", "Path to JSON config file").Required().String()
+	outDirArg           = app.Arg("outdir", "Output dir").Required().String()
+	profileArg          = app.Flag("profile", "Profile to build").String()
+	resumeArg           = app.Flag("resume", "Which package to resume the build at").String()
+	concurrencyLevelArg = app.Flag("concurrency", "The N in -jN to pass to make").Short('j').Default("2").String()
 )
 
 func main() {
+	makeConcurrencyFlag := "-j" + (*concurrencyLevelArg)
+
 	_, err := app.Parse(os.Args[1:])
 	if err != nil {
 		ctx, _ := app.ParseContext(os.Args[1:])
@@ -73,6 +76,7 @@ func main() {
 	log.Printf("Config: %#v", config)
 	for _, profile := range config.Profiles {
 		if profileArg != nil && *profileArg != profile.Name {
+			log.Println("Skipping", profile.Name)
 			continue
 		}
 
@@ -102,6 +106,7 @@ func main() {
 			}
 
 			if skipping {
+				log.Println("Skipping", pkg.Name)
 				continue
 			}
 
@@ -216,7 +221,7 @@ func main() {
 
 				log.Println("Building...")
 
-				err = command("make")
+				err = command("make", makeConcurrencyFlag)
 				if err != nil {
 					log.Fatal(err)
 				}
