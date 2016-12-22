@@ -3,6 +3,7 @@
 		{
 			"name": "itchsetup32",
 			"env": {
+				"CC": "gcc -m32",
 				"CFLAGS": "-m32",
 				"CXXFLAGS": "-m32",
 				"LDFLAGS": "-m32"
