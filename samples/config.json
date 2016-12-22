@@ -18,8 +18,7 @@
 	"packages": [
 		{
 			"name": "libpng",
-			"sources": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.26/libpng-1.6.26.tar.xz/download",
-			"format": "tar.xz"
+			"sources": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.26/libpng-1.6.26.tar.xz/download"
 		},
 		{
 			"name": "glib",
