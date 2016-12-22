@@ -242,9 +242,9 @@ func main() {
 func tarFlagsForFormat(format string) (string, error) {
 	switch format {
 	case "tar.gz":
-		return "xzf", nil
+		return "xf", nil
 	case "tar.xz":
-		return "xJf", nil
+		return "xf", nil
 	default:
 		return "", fmt.Errorf("tarFlags: unknown format %s", format)
 	}
