@@ -110,7 +110,7 @@ func main() {
 		}
 
 		expand := func(s string) string {
-			res := strings.Replace(s, "$PREFIX", prefix, 0)
+			res := strings.Replace(s, "$PREFIX", prefix, -1)
 			return res
 		}
 
