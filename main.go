@@ -130,6 +130,7 @@ func main() {
 				env = append(env, fmt.Sprintf("%s=%s", k, v))
 			}
 			env = append(env, fmt.Sprintf("PREFIX=%s", prefix))
+			env = append(env, fmt.Sprintf("PKG_CONFIG_PATH=%s/lib/pkgconfig", prefix))
 
 			pkgSrc := filepath.Join(src, pkg.Name)
 			err = os.MkdirAll(pkgSrc, 0755)
