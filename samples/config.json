@@ -18,7 +18,10 @@
 	"packages": [
 		{
 			"name": "zlib",
-			"sources": "http://zlib.net/zlib-1.2.8.tar.gz"
+			"sources": "http://zlib.net/zlib-1.2.8.tar.gz",
+			"configureBlacklist": [
+				"--build"
+			]
 		},
 		{
 			"name": "libpng",

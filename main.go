@@ -33,10 +33,24 @@ type Profile struct {
 }
 
 type Package struct {
-	Name      string
-	Sources   string
-	Format    string
-	Configure []string
+	Name               string
+	Sources            string
+	Format             string
+	Configure          []string
+	ConfigureBlacklist []string
+}
+
+type Blacklist struct {
+	Prefixes []string
+}
+
+func (bl *Blacklist) Has(s string) bool {
+	for _, p := range bl.Prefixes {
+		if strings.HasPrefix(s, p) {
+			return true
+		}
+	}
+	return false
 }
 
 var (
@@ -204,12 +218,18 @@ func main() {
 				configureArgs := []string{}
 				configureArgs = append(configureArgs, "--prefix="+prefix)
 
+				configureBlacklist := &Blacklist{Prefixes: pkg.ConfigureBlacklist}
+
 				for _, arg := range profile.Configure {
-					configureArgs = append(configureArgs, arg)
+					if !configureBlacklist.Has(arg) {
+						configureArgs = append(configureArgs, arg)
+					}
 				}
 
 				for _, arg := range pkg.Configure {
-					configureArgs = append(configureArgs, arg)
+					if !configureBlacklist.Has(arg) {
+						configureArgs = append(configureArgs, arg)
+					}
 				}
 
 				log.Println("Configuring...")
