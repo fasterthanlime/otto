@@ -17,7 +17,7 @@
 				"CFLAGS": "-I $PREFIX/include",
 				"CXXFLAGS": "-I $PREFIX/include",
 				"LDFLAGS": "-L $PREFIX/lib"
-			},
+			}
 		}
 	],
 	"packages": [
