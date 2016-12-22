@@ -75,7 +75,7 @@ func main() {
 
 	log.Printf("Config: %#v", config)
 	for _, profile := range config.Profiles {
-		if profileArg != nil && *profileArg != profile.Name {
+		if *profileArg != "" && *profileArg != profile.Name {
 			log.Println("Skipping", profile.Name)
 			continue
 		}
@@ -96,7 +96,7 @@ func main() {
 		}
 
 		skipping := false
-		if resumeArg != nil {
+		if *resumeArg != "" {
 			skipping = true
 		}
 
